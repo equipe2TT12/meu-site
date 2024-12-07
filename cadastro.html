@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Usuário</title>
+  <link rel="stylesheet" href="cadastro.css"> <!-- Referência para o arquivo CSS externo -->
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Cadastro de Usuário</h1>
+      <p>Preencha os campos abaixo para criar sua conta.</p>
+    </header>
+
+    <!-- O formulário agora envia dados para o cadastro.php -->
+    <form id="signup-form" action="cadastro.php" method="POST">
+      <div class="form-group">
+        <label for="name">Nome Completo</label>
+        <input type="text" id="name" name="name" placeholder="Digite seu nome completo" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Telefone</label>
+        <input type="tel" id="phone" name="phone" placeholder="Digite seu telefone" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirmar Senha</label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirme sua senha" required>
+      </div>
+
+      <div class="form-group">
+        <label for="birthdate">Data de Nascimento</label>
+        <input type="date" id="birthdate" name="birthdate" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Endereço</label>
+        <input type="text" id="address" name="address" placeholder="Digite seu endereço" required>
+      </div>
+
+      <div class="form-group">
+        <label for="state">Estado</label>
+        <select id="state" name="state" required>
+          <option value="">Selecione um estado</option>
+          <option value="AC">Acre</option>
+          <option value="AL">Alagoas</option>
+          <option value="AP">Amapá</option>
+          <option value="AM">Amazonas</option>
+          <option value="BA">Bahia</option>
+          <option value="CE">Ceará</option>
+          <option value="DF">Distrito Federal</option>
+          <option value="ES">Espírito Santo</option>
+          <option value="GO">Goiás</option>
+          <option value="MA">Maranhão</option>
+          <option value="MT">Mato Grosso</option>
+          <option value="MS">Mato Grosso do Sul</option>
+          <option value="MG">Minas Gerais</option>
+          <option value="PA">Pará</option>
+          <option value="PB">Paraíba</option>
+          <option value="PR">Paraná</option>
+          <option value="PE">Pernambuco</option>
+          <option value="PI">Piauí</option>
+          <option value="RJ">Rio de Janeiro</option>
+          <option value="RN">Rio Grande do Norte</option>
+          <option value="RS">Rio Grande do Sul</option>
+          <option value="RO">Rondônia</option>
+          <option value="RR">Roraima</option>
+          <option value="SC">Santa Catarina</option>
+          <option value="SP">São Paulo</option>
+          <option value="SE">Sergipe</option>
+          <option value="TO">Tocantins</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="city">Cidade</label>
+        <div class="search-container">
+          <input type="text" id="city" name="city" placeholder="Digite sua cidade" required>
+          <span class="search-icon">
+            <img src="https://img.icons8.com/ios-filled/50/000000/search.png" alt="Search">
+          </span>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Cadastrar</button>
+    </form>
+
+    <footer>
+      <p>&copy; 2024 Monitoramento de Lagos - Todos os direitos reservados</p>
+    </footer>
+  </div>
+
+  <script>
+    const cities = {
+      'AC': ['Rio Branco', 'Cruzeiro do Sul', 'Sena Madureira'],
+      'AL': ['Maceió', 'Arapiraca', 'Palmeira dos Índios'],
+      'AP': ['Macapá', 'Santana', 'Laranjal do Jari'],
+      'AM': ['Manaus', 'Parintins', 'Itacoatiara'],
+      'BA': ['Salvador', 'Feira de Santana', 'Vitória da Conquista'],
+      'CE': ['Fortaleza', 'Caucaia', 'Juazeiro do Norte'],
+      'DF': ['Brasília', 'Ceilândia', 'Taguatinga'],
+      'ES': ['Vitória', 'Vila Velha', 'Serra'],
+      'GO': ['Goiânia', 'Anápolis', 'Aparecida de Goiânia'],
+      'MA': ['São Luís', 'Imperatriz', 'Caxias'],
+      'MT': ['Cuiabá', 'Várzea Grande', 'Rondonópolis'],
+      'MS': ['Campo Grande', 'Dourados', 'Três Lagoas'],
+      'MG': ['Belo Horizonte', 'Uberlândia', 'Contagem'],
+      'PA': ['Belém', 'Ananindeua', 'Santarém'],
+      'PB': ['João Pessoa', 'Campina Grande', 'Patos'],
+      'PR': ['Curitiba', 'Londrina', 'Maringá'],
+      'PE': ['Recife', 'Olinda', 'Jaboatão dos Guararapes'],
+      'PI': ['Teresina', 'Parnaíba', 'Picos'],
+      'RJ': ['Rio de Janeiro', 'Niterói', 'Campos dos Goytacazes'],
+      'RN': ['Natal', 'Mossoró', 'Parnamirim'],
+      'RS': ['Porto Alegre', 'Caxias do Sul', 'Pelotas'],
+      'RO': ['Porto Velho', 'Ji-Paraná', 'Ariquemes'],
+      'RR': ['Boa Vista', 'Rorainópolis', 'Caracaraí'],
+      'SC': ['Florianópolis', 'Joinville', 'Blumenau'],
+      'SP': ['São Paulo', 'Campinas', 'Santos'],
+      'SE': ['Aracaju', 'Nossa Senhora do Socorro', 'Lagarto'],
+      'TO': ['Palmas', 'Araguaína', 'Gurupi']
+    };
+
+    // Adiciona evento para quando o estado for alterado
+    document.getElementById('state').addEventListener('change', function() {
+      const selectedState = this.value;
+      const cityInput = document.getElementById('city');
+      cityInput.value = ''; // Limpa o campo de cidade ao mudar o estado
+
+      if (selectedState && cities[selectedState]) {
+        cityInput.setAttribute('list', 'city-list');
+        let dataList = document.getElementById('city-list');
+        if (!dataList) {
+          dataList = document.createElement('datalist');
+          dataList.id = 'city-list';
+          cityInput.parentNode.appendChild(dataList);
+        }
+        dataList.innerHTML = ''; // Limpa as opções anteriores
+
+        cities[selectedState].forEach(city => {
+          const option = document.createElement('option');
+          option.value = city;
+          dataList.appendChild(option);
+        });
+      } else {
+        cityInput.removeAttribute('list');
+      }
+    });
+  </script>
+</body>
+</html>

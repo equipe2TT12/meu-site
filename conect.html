@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leitura do Arduino via Bluetooth</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    pre {
+      background-color: #f1f1f1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      font-size: 1.2em;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Conectar ao Arduino via Bluetooth</h1>
+  <button id="connectButton">Conectar ao Bluetooth</button>
+  <h2>Dados Recebidos:</h2>
+  <pre id="serialOutput">Aguardando dados...</pre>
+
+  <script>
+    let characteristic;
+    let bluetoothDevice;
+
+    // Função para conectar ao dispositivo Bluetooth
+    async function connectBluetooth() {
+      try {
+        // Solicita ao navegador para procurar dispositivos Bluetooth disponíveis
+        bluetoothDevice = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: ['00001101-0000-1000-8000-00805f9b34fb'] // UUID para o serviço Serial Port (SPP)
+        });
+
+        // Conecta-se ao dispositivo e obtém o GATT server
+        const server = await bluetoothDevice.gatt.connect();
+
+        // Obtém o serviço Serial Port (SPP)
+        const service = await server.getPrimaryService('00001101-0000-1000-8000-00805f9b34fb');
+
+        // Obtém a característica de leitura do serial
+        characteristic = await service.getCharacteristic('00001101-0000-1000-8000-00805f9b34fb');
+
+        // Inicia a leitura contínua dos dados do Arduino
+        startReading();
+
+        document.getElementById('serialOutput').textContent = 'Conectado ao Arduino!';
+      } catch (error) {
+        console.log('Erro de conexão:', error);
+        document.getElementById('serialOutput').textContent = 'Erro ao conectar ao Bluetooth!';
+      }
+    }
+
+    // Função para ler os dados da característica de Bluetooth
+    async function startReading() {
+      try {
+        // Configura a característica para notificações (leitura contínua)
+        await characteristic.startNotifications();
+        characteristic.addEventListener('characteristicvaluechanged', handleSerialData);
+      } catch (error) {
+        console.log('Erro ao iniciar leitura:', error);
+        document.getElementById('serialOutput').textContent = 'Falha na leitura dos dados!';
+      }
+    }
+
+    // Função para manipular os dados recebidos do Arduino
+    function handleSerialData(event) {
+      const value = event.target.value;
+      const decoder = new TextDecoder('utf-8');
+      const serialData = decoder.decode(value);
+
+      // Exibe os dados no elemento HTML
+      document.getElementById('serialOutput').textContent = serialData;
+    }
+
+    // Adiciona evento para o botão de conexão
+    document.getElementById('connectButton').addEventListener('click', connectBluetooth);
+  </script>
+</body>
+</html>

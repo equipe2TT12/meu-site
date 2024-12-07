@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoramento de Qualidade da Água</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Adicionando o ícone do FontAwesome para o símbolo de Bluetooth -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>Monitoramento de Qualidade da Água</h1>
+    <p>Verifique as medições de turbidez, temperatura e pH nos dias e meses.</p>
+  </header>
+
+  <section class="filters">
+    <label for="filter-date">Filtrar por Data:</label>
+    <input type="date" id="filter-date">
+    
+    <label for="filter-month">Filtrar por Mês:</label>
+    <input type="month" id="filter-month">
+  </section>
+
+  <section id="records">
+    <h2>Registros de Medições</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Hora</th>
+          <th>Turbidez (%)</th>
+          <th>Temperatura (°C)</th>
+          <th>pH</th>
+        </tr>
+      </thead>
+      <tbody id="data-rows">
+        <!-- As linhas de dados vão aparecer aqui -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Adicionando o botão de conexão com Bluetooth -->
+  <section id="bluetooth-connection">
+    <button id="connectBluetoothButton" onclick="connectBluetooth()">
+      <i class="fas fa-bluetooth"></i> Conectar via Bluetooth
+    </button>
+  </section>
+
+  <script>
+    // Exemplo de dados simulados de medições
+    const dataEntries = [
+      {
+        date: '2024-12-01',
+        time: '08:30',
+        turbidity: 75,
+        temperature: 28.5,
+        ph: 7.2
+      },
+      {
+        date: '2024-12-01',
+        time: '14:30',
+        turbidity: 72,
+        temperature: 29.0,
+        ph: 7.3
+      },
+      {
+        date: '2024-12-02',
+        time: '08:30',
+        turbidity: 80,
+        temperature: 27.8,
+        ph: 7.1
+      },
+      {
+        date: '2024-12-02',
+        time: '14:30',
+        turbidity: 78,
+        temperature: 28.2,
+        ph: 7.0
+      }
+    ];
+
+    // Função para filtrar e exibir as medições
+    function filterAndDisplayData() {
+      const dateFilter = document.getElementById('filter-date').value;
+      const monthFilter = document.getElementById('filter-month').value;
+
+      const filteredData = dataEntries.filter(entry => {
+        let isValid = true;
+
+        if (dateFilter) {
+          isValid = isValid && entry.date === dateFilter;
+        }
+
+        if (monthFilter) {
+          const entryMonth = entry.date.slice(0, 7); // 'YYYY-MM'
+          isValid = isValid && entryMonth === monthFilter;
+        }
+
+        return isValid;
+      });
+
+      // Exibir os dados filtrados na tabela
+      const dataRows = document.getElementById('data-rows');
+      dataRows.innerHTML = '';
+
+      filteredData.forEach(entry => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${entry.date}</td>
+          <td>${entry.time}</td>
+          <td>${entry.turbidity}%</td>
+          <td>${entry.temperature}°C</td>
+          <td>${entry.ph}</td>
+        `;
+        dataRows.appendChild(row);
+      });
+    }
+
+    // Atualizar os dados ao carregar a página e ao aplicar filtros
+    window.onload = filterAndDisplayData;
+    document.getElementById('filter-date').addEventListener('input', filterAndDisplayData);
+    document.getElementById('filter-month').addEventListener('input', filterAndDisplayData);
+
+    // Função para abrir outra aba com a conexão Bluetooth
+    function connectBluetooth() {
+      // Esta função pode ser configurada para abrir outra página com a lógica de Bluetooth
+      window.open('index2.html', '_blank'); // Altere 'bluetooth_connection.html' para a página desejada
+    }
+  </script>
+</body>
+</html>
